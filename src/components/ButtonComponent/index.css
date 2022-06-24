@@ -1,0 +1,22 @@
+@import "../../css/";
+.button {
+  border: none;
+  outline: none;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 4px;
+}
+.button:hover {
+  opacity: 0.7;
+}
+.button span {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.button span svg {
+  font-size: 0.6rem;
+}

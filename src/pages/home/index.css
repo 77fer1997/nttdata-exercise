@@ -1,0 +1,51 @@
+@import "../../css/";
+.container {
+  width: 60%;
+  margin: 0 auto;
+}
+.grid {
+  display: grid;
+  gap: 10px;
+}
+.pokemon-image {
+  width: 30px;
+  height: auto;
+}
+.subtitle {
+  font-weight: 500;
+  font-size: 1rem;
+}
+.content-search {
+  display: flex;
+  justify-content: space-between;
+}
+.new-pokemon {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 4px;
+  border: 2px solid var(--secondary-color);
+  padding: 1rem 2rem;
+}
+.new-pokemon_form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.icon-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  color: var(--primary-color);
+}

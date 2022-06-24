@@ -1,0 +1,19 @@
+@import "../../css/";
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+}
+td,
+th {
+  border: 2px solid var(--secondary-color);
+  text-align: left;
+  padding: 8px;
+}
+th {
+  text-align: center;
+}
+.table-container {
+  overflow-x: scroll;
+}
