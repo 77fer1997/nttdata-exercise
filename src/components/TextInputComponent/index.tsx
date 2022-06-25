@@ -10,7 +10,7 @@ export const TextInputComponent: FC<iProps> = ({ name, label, onChange, placehol
     return (
         <div className="input-field">
             <label htmlFor={name}>{label}</label>
-            <input type="text" name={name} id={name} onChange={onChange} />
+            <input type="text" name={name} id={name} onChange={onChange} placeholder={placeholder} />
         </div>
     )
 }

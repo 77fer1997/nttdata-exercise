@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import "./index.css"
 interface iProps {
     disabled?: boolean

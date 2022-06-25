@@ -1,0 +1,1 @@
+export const URL_API = "https://bp-pokemons.herokuapp.com";

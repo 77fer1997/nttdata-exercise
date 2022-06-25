@@ -15,5 +15,7 @@ th {
   text-align: center;
 }
 .table-container {
+  height: 40vh;
   overflow-x: scroll;
+  overflow-y: scroll;
 }
