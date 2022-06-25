@@ -16,37 +16,22 @@ import { iPokemons } from "../../interfaces/pokemon";
 
 export const Home = () => {
   const [searchText, setSearchText] = useState({});
+  const [filteredPokemons, setFilteredPokemons] = useState<Array<iPokemons>>();
   const [newPokemonText, setNewPokemonText] = useState({
     nombre: "",
     imagen: "",
     ataque: 0,
     defensa: 0,
   });
-  const { pokemons, getPokemons, postPokemons, deletePokemons } = Pokemons();
-  const [filteredPokemons, setFilteredPokemons] = useState<Array<iPokemons>>();
-  const handleSearchInputChange = ({
-    target: { name, value },
-  }: ChangeEvent<HTMLInputElement>) => {
-    setSearchText({
-      ...searchText,
-      [name]: value,
-    });
-    filterPokemons(value);
-  };
-  const handleNewInputChange = ({
-    target: { name, value },
-  }: ChangeEvent<HTMLInputElement>) => {
-    setNewPokemonText({
-      ...newPokemonText,
-      [name]: value,
-    });
-  };
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault();
-    const { nombre, imagen, ataque, defensa } = newPokemonText;
-    postPokemons(nombre, imagen, ataque, defensa);
-    console.log("hola")
-  };
+  const [editPokemonText, setEditPokemonText] = useState({
+    nombre: "",
+    imagen: "",
+    ataque: 0,
+    defensa: 0,
+  })
+  const [edit, setEdit] = useState<boolean>(false);
+  const { pokemons, getPokemons, postPokemons, deletePokemons, putPokemons } =
+    Pokemons();
   const filterPokemons = (value: string) => {
     const filteredPokemons = pokemons?.filter((pokemon) => {
       if (
@@ -56,12 +41,60 @@ export const Home = () => {
           .includes(value.toLocaleLowerCase())
       ) {
         return pokemon;
+      } else {
+        return null
       }
     });
     setFilteredPokemons(filteredPokemons);
   };
+  /* const handleClickNewPokemon = () =>{
+    setEdit(false);
+  } */
+  const handleEditPokemon = (pokemon: iPokemons) => {
+    setEdit(true);
+    setEditPokemonText({
+      ...editPokemonText,
+      nombre: pokemon.name,
+      imagen: pokemon.image,
+      ataque: pokemon.attack,
+      defensa: pokemon.defense
+    })
+  };
+  const handleNewInputChange = ({
+    target: { name, value },
+  }: ChangeEvent<HTMLInputElement>) => {
+    setNewPokemonText({
+      ...newPokemonText,
+      [name]: value,
+    });
+  };
+  const handleEditInputChange = ({
+    target: { name, value },
+  }: ChangeEvent<HTMLInputElement>) => {
+    setEditPokemonText({
+      ...editPokemonText,
+      [name]: value,
+    });
+  };
+  const handleSearchInputChange = ({
+    target: { name, value },
+  }: ChangeEvent<HTMLInputElement>) => {
+    setSearchText({
+      ...searchText,
+      [name]: value,
+    });
+    filterPokemons(value);
+  };
+
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    const { nombre, imagen, ataque, defensa } = newPokemonText;
+    postPokemons(nombre, imagen, ataque, defensa);
+    console.log("hola");
+  };
+
   useEffect(() => {
-    getPokemons()
+    getPokemons();
   }, []);
 
   return (
@@ -73,11 +106,10 @@ export const Home = () => {
             name="search"
             onChange={handleSearchInputChange}
           />
-          <ButtonComponent>
+          <ButtonComponent label="Nuevo" onClick={() => setEdit(false)}>
             <IconButtonComponent>
               <BsIcons.BsPlusLg />
             </IconButtonComponent>
-            <p>Nuevo</p>
           </ButtonComponent>
         </div>
 
@@ -107,10 +139,14 @@ export const Home = () => {
                   <td>{pokemon.defense}</td>
                   <td>
                     <div className="icon-button-container">
-                      <IconButtonComponent >
-                        <AiIcons.AiOutlineEdit />
+                      <IconButtonComponent>
+                        <AiIcons.AiOutlineEdit
+                          onClick={() => handleEditPokemon(pokemon)}
+                        />
                       </IconButtonComponent>
-                      <IconButtonComponent onClick={() => console.log("hola")}>
+                      <IconButtonComponent
+                        onClick={() => deletePokemons(pokemon.id)}
+                      >
                         <AiIcons.AiOutlineDelete />
                       </IconButtonComponent>
                     </div>
@@ -131,10 +167,14 @@ export const Home = () => {
                   <td>{pokemon.defense}</td>
                   <td>
                     <div className="icon-button-container">
-                      <IconButtonComponent >
+                      <IconButtonComponent
+                        onClick={() => handleEditPokemon(pokemon)}
+                      >
                         <AiIcons.AiOutlineEdit />
                       </IconButtonComponent>
-                      <IconButtonComponent onClick={() => deletePokemons(pokemon.id)}>
+                      <IconButtonComponent
+                        onClick={() => deletePokemons(pokemon.id)}
+                      >
                         <AiIcons.AiOutlineDelete />
                       </IconButtonComponent>
                     </div>
@@ -145,43 +185,89 @@ export const Home = () => {
         </TableComponent>
 
         <div className="new-pokemon">
-          <h2 className="subtitle">Nuevo Pokemon</h2>
+          <h2 className="subtitle">
+            {" "}
+            {edit ? "Edit Pokemon" : "Nuevo Pokemon"}{" "}
+          </h2>
           <form onSubmit={handleSubmit}>
-            <div className="new-pokemon_form">
-              <div className="input-group">
-                <TextInputComponent
-                  label="Nombre:"
-                  name="nombre"
-                  onChange={handleNewInputChange}
-                  placeholder="nombre"
-                />
-                <TextInputComponent
-                  label="Imagen:"
-                  name="imagen"
-                  onChange={handleNewInputChange}
-                  placeholder="url"
-                />
+            {!edit ? (
+              <div className="new-pokemon_form">
+                <div className="input-group">
+                  <TextInputComponent
+                    label="Nombre:"
+                    name="nombre"
+                    onChange={handleNewInputChange}
+                    placeholder="nombre"
+                    value={newPokemonText.nombre}
+                  />
+                  <TextInputComponent
+                    label="Imagen:"
+                    name="imagen"
+                    onChange={handleNewInputChange}
+                    placeholder="url"
+                    value={newPokemonText.imagen}
+                  />
+                </div>
+                <div className="input-group">
+                  <RangeInputComponent
+                    label="Ataque:"
+                    name="ataque"
+                    onChange={handleNewInputChange}
+                    value={newPokemonText.ataque}
+                  />
+                  <RangeInputComponent
+                    label="Defensa:"
+                    name="defensa"
+                    onChange={handleNewInputChange}
+                    value={newPokemonText.defensa}
+                  />
+                </div>
               </div>
-              <div className="input-group">
-                <RangeInputComponent
-                  label="Ataque:"
-                  name="ataque"
-                  onChange={handleNewInputChange}
-                />
-                <RangeInputComponent
-                  label="Defensa:"
-                  name="defensa"
-                  onChange={handleNewInputChange}
-                />
+            ) : (
+              <div className="new-pokemon_form">
+                <div className="input-group">
+                  <TextInputComponent
+                    label="Nombre:"
+                    name="nombre"
+                    onChange={handleEditInputChange}
+                    placeholder="nombre"
+                    value={editPokemonText.nombre}
+                  />
+                  <TextInputComponent
+                    label="Imagen:"
+                    name="imagen"
+                    onChange={handleEditInputChange}
+                    placeholder="url"
+                    value={editPokemonText.imagen}
+                  />
+                </div>
+                <div className="input-group">
+                  <RangeInputComponent
+                    label="Ataque:"
+                    name="ataque"
+                    onChange={handleEditInputChange}
+                    value={editPokemonText.ataque}
+                  />
+                  <RangeInputComponent
+                    label="Defensa:"
+                    name="defensa"
+                    onChange={handleEditInputChange}
+                    value={editPokemonText.defensa}
+                  />
+                </div>
               </div>
-            </div>
+            )}
+
             <div className="button-container">
-              <ButtonComponent type="submit">Guardar</ButtonComponent>
-              <ButtonComponent>Cancelar</ButtonComponent>
+              <ButtonComponent label="Guardar" type="submit" />
+              <ButtonComponent
+                onClick={() => console.log("cancelar")}
+                label="Cancelar"
+              />
             </div>
           </form>
-
         </div>
+
       </div>
     </div>
   );

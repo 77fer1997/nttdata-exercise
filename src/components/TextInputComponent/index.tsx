@@ -5,12 +5,13 @@ interface iProps {
     name: string
     placeholder?: string
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    value?: string;
 }
-export const TextInputComponent: FC<iProps> = ({ name, label, onChange, placeholder }) => {
+export const TextInputComponent: FC<iProps> = ({ name, label, onChange, placeholder, value }) => {
     return (
         <div className="input-field">
             <label htmlFor={name}>{label}</label>
-            <input type="text" name={name} id={name} onChange={onChange} placeholder={placeholder} />
+            <input type="text" name={name} id={name} onChange={onChange} placeholder={placeholder} value={value} />
         </div>
     )
 }

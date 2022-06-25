@@ -8,6 +8,6 @@ interface iProps {
 }
 export const IconButtonComponent: FC<iProps> = ({ children, onClick }) => {
     return (
-        <div style={{ cursor: "pointer" }} onClick={onClick}>{children}</div>
+        <span onClick={onClick}>{children}</span>
     )
 }

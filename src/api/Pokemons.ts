@@ -27,7 +27,6 @@ export const Pokemons = () => {
                     idAuthor: 1
                 }
             )
-            console.log("entre");
             getPokemons();
         } catch (error) {
             console.log(error);
@@ -38,11 +37,26 @@ export const Pokemons = () => {
         try {
             await axios.delete(`${URL_API}/${id}`)
             getPokemons();
-            console.log("first");
         } catch (error) {
             console.log(error)
         }
     }
-    return { pokemons, getPokemons, postPokemons, deletePokemons }
+    const putPokemons = async (id: number, name: string, image: string, attack: number, defense: number) => {
+        try {
+            await axios.put(`${URL_API}/${id}`, {
+                name: name,
+                image: image,
+                attack: attack,
+                defense: defense,
+                hp: 100,
+                type: "heroku",
+                idAuthor: 1
+            })
+            getPokemons();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    return { pokemons, getPokemons, postPokemons, deletePokemons, putPokemons }
 }
 
