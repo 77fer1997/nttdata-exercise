@@ -12,9 +12,8 @@ export const ButtonComponent: FC<iProps> = ({ children, disabled, type, label, o
         <button className="button" type={type} disabled={disabled} onClick={onClick}>
             <div className="button_elements-container">
                 {children}
-                <label>{label}</label>
+                <p>{label}</p>
             </div>
-
         </button>
     );
 };

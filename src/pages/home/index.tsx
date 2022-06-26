@@ -24,6 +24,7 @@ export const Home = () => {
     defensa: 0,
   });
   const [editPokemonText, setEditPokemonText] = useState({
+    id: 0,
     nombre: "",
     imagen: "",
     ataque: 0,
@@ -47,13 +48,11 @@ export const Home = () => {
     });
     setFilteredPokemons(filteredPokemons);
   };
-  /* const handleClickNewPokemon = () =>{
-    setEdit(false);
-  } */
   const handleEditPokemon = (pokemon: iPokemons) => {
     setEdit(true);
     setEditPokemonText({
       ...editPokemonText,
+      id: pokemon.id,
       nombre: pokemon.name,
       imagen: pokemon.image,
       ataque: pokemon.attack,
@@ -88,8 +87,18 @@ export const Home = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    const { nombre, imagen, ataque, defensa } = newPokemonText;
-    postPokemons(nombre, imagen, ataque, defensa);
+    console.log("hola")
+    if (edit) {
+      console.log("entre aqui");
+      let { nombre, imagen, ataque, defensa, id } = editPokemonText;
+      putPokemons(id, nombre, imagen, ataque, defensa)
+      console.log(id);
+    } else {
+      let { nombre, imagen, ataque, defensa } = newPokemonText;
+      postPokemons(nombre, imagen, ataque, defensa);
+    }
+
+
     console.log("hola");
   };
 
@@ -259,6 +268,7 @@ export const Home = () => {
             )}
 
             <div className="button-container">
+
               <ButtonComponent label="Guardar" type="submit" />
               <ButtonComponent
                 onClick={() => console.log("cancelar")}
