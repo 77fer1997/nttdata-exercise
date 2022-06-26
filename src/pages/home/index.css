@@ -23,7 +23,7 @@
 .new-pokemon {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 2rem;
   border-radius: 4px;
   border: 2px solid var(--secondary-color);
   padding: 1rem 2rem;
@@ -42,6 +42,7 @@
   display: flex;
   justify-content: center;
   gap: 2rem;
+  margin-top: 1rem;
 }
 .icon-button-container {
   width: 100%;
@@ -49,6 +50,10 @@
   justify-content: center;
   gap: 20px;
   color: var(--primary-color);
+}
+.justify-center {
+  display: flex;
+  justify-content: center;
 }
 @media screen and (min-width: 768px) {
   .container {

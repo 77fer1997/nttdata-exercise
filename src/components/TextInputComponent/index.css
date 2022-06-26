@@ -2,10 +2,11 @@
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 10px;
+  min-height: 40px;
 }
 .input-field label {
   align-self: center;
-  max-width: 70px;
+  min-width: 60px;
   display: inline-block;
 }
 .input-field input {

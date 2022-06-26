@@ -10,7 +10,9 @@ import { Pokemons } from "../../api";
 
 import "./index.css";
 import * as AiIcons from "react-icons/ai";
+import * as BiIcons from "react-icons/bi";
 import * as BsIcons from "react-icons/bs";
+import * as FaIcons from "react-icons/fa";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { iPokemons } from "../../interfaces/pokemon";
 
@@ -194,10 +196,13 @@ export const Home = () => {
         </TableComponent>
 
         <div className="new-pokemon">
-          <h2 className="subtitle">
-            {" "}
-            {edit ? "Edit Pokemon" : "Nuevo Pokemon"}{" "}
-          </h2>
+          <div className="justify-center">
+            <h2 className="subtitle">
+              {" "}
+              {edit ? "Edit Pokemon" : "Nuevo Pokemon"}{" "}
+            </h2>
+          </div>
+
           <form onSubmit={handleSubmit}>
             {!edit ? (
               <div className="new-pokemon_form">
@@ -269,11 +274,19 @@ export const Home = () => {
 
             <div className="button-container">
 
-              <ButtonComponent label="Guardar" type="submit" />
+              <ButtonComponent label="Guardar" type="submit">
+                <IconButtonComponent>
+                  <BiIcons.BiSave />
+                </IconButtonComponent>
+              </ButtonComponent>
               <ButtonComponent
                 onClick={() => console.log("cancelar")}
                 label="Cancelar"
-              />
+              >
+                <IconButtonComponent>
+                  <FaIcons.FaTimes />
+                </IconButtonComponent>
+              </ButtonComponent>
             </div>
           </form>
         </div>
