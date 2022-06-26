@@ -19,6 +19,7 @@ import { iPokemons } from "../../interfaces/pokemon";
 export const Home = () => {
   const [searchText, setSearchText] = useState({});
   const [filteredPokemons, setFilteredPokemons] = useState<Array<iPokemons>>();
+  const [showPokemonSection, setShowPokemonSection] = useState<Boolean>(false);
   const [newPokemonText, setNewPokemonText] = useState({
     nombre: "",
     imagen: "",
@@ -50,8 +51,13 @@ export const Home = () => {
     });
     setFilteredPokemons(filteredPokemons);
   };
+  const handleClickNewButton = () => {
+    setEdit(false);
+    setShowPokemonSection(true)
+  }
   const handleEditPokemon = (pokemon: iPokemons) => {
     setEdit(true);
+    setShowPokemonSection(true);
     setEditPokemonText({
       ...editPokemonText,
       id: pokemon.id,
@@ -109,188 +115,190 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="container">
-      <div className="grid">
-        <h1 className="subtitle">Listado de pokemon</h1>
-        <div className="content-search">
-          <SearchInputComponent
-            name="search"
-            onChange={handleSearchInputChange}
-          />
-          <ButtonComponent label="Nuevo" onClick={() => setEdit(false)}>
-            <IconButtonComponent>
-              <BsIcons.BsPlusLg />
-            </IconButtonComponent>
-          </ButtonComponent>
-        </div>
-
-        <TableComponent>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Imagen</th>
-              <th>Ataque</th>
-              <th>Defensa</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(searchText).length !== 0
-              ? filteredPokemons?.map((pokemon) => (
-                <tr key={pokemon.id}>
-                  <td>{pokemon.name}</td>
-                  <td>
-                    <img
-                      className="pokemon-image"
-                      src={pokemon.image}
-                      alt=""
-                    />
-                  </td>
-                  <td>{pokemon.attack}</td>
-                  <td>{pokemon.defense}</td>
-                  <td>
-                    <div className="icon-button-container">
-                      <IconButtonComponent>
-                        <AiIcons.AiOutlineEdit
-                          onClick={() => handleEditPokemon(pokemon)}
-                        />
-                      </IconButtonComponent>
-                      <IconButtonComponent
-                        onClick={() => deletePokemons(pokemon.id)}
-                      >
-                        <AiIcons.AiOutlineDelete />
-                      </IconButtonComponent>
-                    </div>
-                  </td>
-                </tr>
-              ))
-              : pokemons?.map((pokemon) => (
-                <tr key={pokemon.id}>
-                  <td>{pokemon.name}</td>
-                  <td>
-                    <img
-                      className="pokemon-image"
-                      src={pokemon.image}
-                      alt=""
-                    />
-                  </td>
-                  <td>{pokemon.attack}</td>
-                  <td>{pokemon.defense}</td>
-                  <td>
-                    <div className="icon-button-container">
-                      <IconButtonComponent
-                        onClick={() => handleEditPokemon(pokemon)}
-                      >
-                        <AiIcons.AiOutlineEdit />
-                      </IconButtonComponent>
-                      <IconButtonComponent
-                        onClick={() => deletePokemons(pokemon.id)}
-                      >
-                        <AiIcons.AiOutlineDelete />
-                      </IconButtonComponent>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </TableComponent>
-
-        <div className="new-pokemon">
-          <div className="justify-center">
-            <h2 className="subtitle">
-              {" "}
-              {edit ? "Edit Pokemon" : "Nuevo Pokemon"}{" "}
-            </h2>
+    <div className="content">
+      <div className="container">
+        <div className="grid">
+          <h1 className="subtitle">Listado de pokemon</h1>
+          <div className="content-search">
+            <SearchInputComponent
+              name="search"
+              onChange={handleSearchInputChange}
+            />
+            <ButtonComponent label="Nuevo" onClick={handleClickNewButton}>
+              <IconButtonComponent>
+                <BsIcons.BsPlusLg />
+              </IconButtonComponent>
+            </ButtonComponent>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            {!edit ? (
-              <div className="new-pokemon_form">
-                <div className="input-group">
-                  <TextInputComponent
-                    label="Nombre:"
-                    name="nombre"
-                    onChange={handleNewInputChange}
-                    placeholder="nombre"
-                    value={newPokemonText.nombre}
-                  />
-                  <TextInputComponent
-                    label="Imagen:"
-                    name="imagen"
-                    onChange={handleNewInputChange}
-                    placeholder="url"
-                    value={newPokemonText.imagen}
-                  />
-                </div>
-                <div className="input-group">
-                  <RangeInputComponent
-                    label="Ataque:"
-                    name="ataque"
-                    onChange={handleNewInputChange}
-                    value={newPokemonText.ataque}
-                  />
-                  <RangeInputComponent
-                    label="Defensa:"
-                    name="defensa"
-                    onChange={handleNewInputChange}
-                    value={newPokemonText.defensa}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="new-pokemon_form">
-                <div className="input-group">
-                  <TextInputComponent
-                    label="Nombre:"
-                    name="nombre"
-                    onChange={handleEditInputChange}
-                    placeholder="nombre"
-                    value={editPokemonText.nombre}
-                  />
-                  <TextInputComponent
-                    label="Imagen:"
-                    name="imagen"
-                    onChange={handleEditInputChange}
-                    placeholder="url"
-                    value={editPokemonText.imagen}
-                  />
-                </div>
-                <div className="input-group">
-                  <RangeInputComponent
-                    label="Ataque:"
-                    name="ataque"
-                    onChange={handleEditInputChange}
-                    value={editPokemonText.ataque}
-                  />
-                  <RangeInputComponent
-                    label="Defensa:"
-                    name="defensa"
-                    onChange={handleEditInputChange}
-                    value={editPokemonText.defensa}
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="button-container">
-
-              <ButtonComponent label="Guardar" type="submit">
-                <IconButtonComponent>
-                  <BiIcons.BiSave />
-                </IconButtonComponent>
-              </ButtonComponent>
-              <ButtonComponent
-                onClick={() => console.log("cancelar")}
-                label="Cancelar"
-              >
-                <IconButtonComponent>
-                  <FaIcons.FaTimes />
-                </IconButtonComponent>
-              </ButtonComponent>
+          <TableComponent>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Imagen</th>
+                <th>Ataque</th>
+                <th>Defensa</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(searchText).length !== 0
+                ? filteredPokemons?.map((pokemon) => (
+                  <tr key={pokemon.id}>
+                    <td>{pokemon.name}</td>
+                    <td>
+                      <img
+                        className="pokemon-image"
+                        src={pokemon.image}
+                        alt=""
+                      />
+                    </td>
+                    <td>{pokemon.attack}</td>
+                    <td>{pokemon.defense}</td>
+                    <td>
+                      <div className="icon-button-container">
+                        <IconButtonComponent>
+                          <AiIcons.AiOutlineEdit
+                            onClick={() => handleEditPokemon(pokemon)}
+                          />
+                        </IconButtonComponent>
+                        <IconButtonComponent
+                          onClick={() => deletePokemons(pokemon.id)}
+                        >
+                          <AiIcons.AiOutlineDelete />
+                        </IconButtonComponent>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+                : pokemons?.map((pokemon) => (
+                  <tr key={pokemon.id}>
+                    <td>{pokemon.name}</td>
+                    <td>
+                      <img
+                        className="pokemon-image"
+                        src={pokemon.image}
+                        alt=""
+                      />
+                    </td>
+                    <td>{pokemon.attack}</td>
+                    <td>{pokemon.defense}</td>
+                    <td>
+                      <div className="icon-button-container">
+                        <IconButtonComponent
+                          onClick={() => handleEditPokemon(pokemon)}
+                        >
+                          <AiIcons.AiOutlineEdit />
+                        </IconButtonComponent>
+                        <IconButtonComponent
+                          onClick={() => deletePokemons(pokemon.id)}
+                        >
+                          <AiIcons.AiOutlineDelete />
+                        </IconButtonComponent>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </TableComponent>
+          {showPokemonSection && <div className="new-pokemon">
+            <div className="justify-center">
+              <h2 className="subtitle">
+                {" "}
+                {edit ? "Edit Pokemon" : "Nuevo Pokemon"}{" "}
+              </h2>
             </div>
-          </form>
-        </div>
 
+            <form onSubmit={handleSubmit}>
+              {!edit ? (
+                <div className="new-pokemon_form">
+                  <div className="input-group">
+                    <TextInputComponent
+                      label="Nombre:"
+                      name="nombre"
+                      onChange={handleNewInputChange}
+                      placeholder="nombre"
+                      value={newPokemonText.nombre}
+                    />
+                    <TextInputComponent
+                      label="Imagen:"
+                      name="imagen"
+                      onChange={handleNewInputChange}
+                      placeholder="url"
+                      value={newPokemonText.imagen}
+                    />
+                  </div>
+                  <div className="input-group">
+                    <RangeInputComponent
+                      label="Ataque:"
+                      name="ataque"
+                      onChange={handleNewInputChange}
+                      value={newPokemonText.ataque}
+                    />
+                    <RangeInputComponent
+                      label="Defensa:"
+                      name="defensa"
+                      onChange={handleNewInputChange}
+                      value={newPokemonText.defensa}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="new-pokemon_form">
+                  <div className="input-group">
+                    <TextInputComponent
+                      label="Nombre:"
+                      name="nombre"
+                      onChange={handleEditInputChange}
+                      placeholder="nombre"
+                      value={editPokemonText.nombre}
+                    />
+                    <TextInputComponent
+                      label="Imagen:"
+                      name="imagen"
+                      onChange={handleEditInputChange}
+                      placeholder="url"
+                      value={editPokemonText.imagen}
+                    />
+                  </div>
+                  <div className="input-group">
+                    <RangeInputComponent
+                      label="Ataque:"
+                      name="ataque"
+                      onChange={handleEditInputChange}
+                      value={editPokemonText.ataque}
+                    />
+                    <RangeInputComponent
+                      label="Defensa:"
+                      name="defensa"
+                      onChange={handleEditInputChange}
+                      value={editPokemonText.defensa}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="button-container">
+
+                <ButtonComponent label="Guardar" type="submit">
+                  <IconButtonComponent>
+                    <BiIcons.BiSave />
+                  </IconButtonComponent>
+                </ButtonComponent>
+                <ButtonComponent
+                  onClick={() => setShowPokemonSection(false)}
+                  label="Cancelar"
+                >
+                  <IconButtonComponent>
+                    <FaIcons.FaTimes />
+                  </IconButtonComponent>
+                </ButtonComponent>
+              </div>
+            </form>
+          </div>}
+
+
+        </div>
       </div>
     </div>
   );

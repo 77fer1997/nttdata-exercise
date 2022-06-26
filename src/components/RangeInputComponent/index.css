@@ -7,7 +7,8 @@
 }
 .range-input-container label {
   align-self: center;
-  min-width: 60px;
+  min-width: 65px;
+  text-align: right;
 }
 .range-input {
   -webkit-appearance: none;
@@ -16,6 +17,27 @@
   opacity: 0.7;
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
+  position: relative;
+  padding-left: 1rem;
+  padding-right: 2rem;
+}
+.range-input::before {
+  content: "0";
+  font-size: 1rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  left: 0;
+}
+.range-input::after {
+  content: "100";
+  font-size: 0.8rem;
+  position: absolute;
+
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .range-input:hover {
   opacity: 1;

@@ -1,10 +1,14 @@
 @import "../../css/";
+.content {
+  z-index: -1;
+}
 .container {
   width: 90%;
   height: 100vh;
   margin: 0 auto;
 }
 .grid {
+  margin-top: 1rem;
   display: grid;
   gap: 10px;
 }

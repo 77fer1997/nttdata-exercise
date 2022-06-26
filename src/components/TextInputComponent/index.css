@@ -8,6 +8,7 @@
   align-self: center;
   min-width: 60px;
   display: inline-block;
+  text-align: right;
 }
 .input-field input {
   outline: none;
